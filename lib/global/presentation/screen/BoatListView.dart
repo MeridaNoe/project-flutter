@@ -47,51 +47,54 @@ class _BoatListViewState extends State<BoatListView> {
               itemCount: boatList.length,
               itemBuilder: (context, index) {
                 final boat = boatList[index];
-                return Container(
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: Color.fromARGB(255, 200, 200, 200), width: 0.5),
-                    ),
-                  ),
-                  child: ListTile(
-                    title: Text(boat.marca),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Modelo: ${boat.modelo}'),
-                        Text('Velocidad Máxima: ${boat.velocidadMaxima}'),
-                        Text('Peso: ${boat.peso}'),
-                      ],
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => UpdateBoat(
-                                boat: boat,
-                                onSave: (updatedBoat) {
-                                  context.read<BoatCubit>().updateBoat(updatedBoat);
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: Card(
+                        child: ListTile(
+                          title: Text(boat.marca),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Modelo: ${boat.modelo}'),
+                              Text('Velocidad Máxima: ${boat.velocidadMaxima}'),
+                              Text('Peso: ${boat.peso}'),
+                            ],
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => UpdateBoat(
+                                      boat: boat,
+                                      onSave: (updatedBoat) {
+                                        context.read<BoatCubit>().updateBoat(updatedBoat);
+                                      },
+                                    )),
+                                  );
                                 },
-                              )),
-                            );
-                          },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return DeleteBoat(boat: boat);
+                                    },
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                        IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DeleteBoat(boat: boat);
-                              },
-                            );
-                          },
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 );
